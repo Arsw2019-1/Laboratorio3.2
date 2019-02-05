@@ -26,15 +26,16 @@ public class PrimeFinderThread extends Thread {
             if (isPrime(i)) {
                 System.out.println("hola");
                 try {
+                    synchronized (this){
                     this.wait();
+                    }
                     System.out.println("Lista de numeros :"+this.getPrimes());
                     Scanner scanner = new Scanner(System.in);
                     if (scanner.hasNext()) {
-                        synchronized (this) {
+                         {
                             this.notify();
                         }
-                        
-                        
+
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(PrimeFinderThread.class.getName()).log(Level.SEVERE, null, ex);

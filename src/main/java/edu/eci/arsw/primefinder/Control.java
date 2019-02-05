@@ -58,10 +58,7 @@ public class Control extends Thread {
 
     @Override
     public void run() {
-        boolean exit = false;
-        reloj = 0;
-        //final Scanner keyboard = new Scanner(System.in);
-     
+
 
         for (int i = 0; i < NTHREADS; i++) {
 
