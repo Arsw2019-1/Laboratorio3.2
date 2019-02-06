@@ -5,27 +5,29 @@
  */
 package edu.eci.arsw.primefinder;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Scanner;
+
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  */
 public class Control extends Thread {
 
+    
     int reloj;
     Timer timer;
+
     private final static int NTHREADS = 3;
     private final static int MAXVALUE = 30000000;
-    private final static int TMILISECONDS = 5000;
+    public final static int TMILISECONDS = 5000;
 
     private final int NDATA = MAXVALUE / NTHREADS;
 
     private PrimeFinderThread pft[];
-
+    
     private Control() {
         super();
         this.pft = new PrimeFinderThread[NTHREADS];
@@ -35,9 +37,7 @@ public class Control extends Thread {
             PrimeFinderThread elem = new PrimeFinderThread(i * NDATA, (i + 1) * NDATA);
             pft[i] = elem;
         }
-        
         pft[i] = new PrimeFinderThread(i * NDATA, MAXVALUE + 1);
-        //time();
     }
 
     public static Control newControl() {
@@ -50,6 +50,7 @@ public class Control extends Thread {
             @Override
             public void run() {
                 reloj += 1000;
+                System.out.println("TIEMPO");
             }
         };
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
@@ -58,12 +59,16 @@ public class Control extends Thread {
 
     @Override
     public void run() {
-
-
         for (int i = 0; i < NTHREADS; i++) {
-
             pft[i].start();
-
+        }
+        for (int ii = 0; ii < NTHREADS; ii++) {
+            try {
+                pft[ii].getListPrimes();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
         }
     }
 
