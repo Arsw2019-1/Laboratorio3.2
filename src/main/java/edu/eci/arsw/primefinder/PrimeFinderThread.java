@@ -95,10 +95,11 @@ public class PrimeFinderThread extends Thread {
                             //System.out.println(i);
                             tiempo = (System.currentTimeMillis()) - Control.startTime;
                             this.wait();
+                             
                         } catch (InterruptedException ex) {
                             Logger.getLogger(PrimeFinderThread.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
+                    
                     }
                    
                     if (isPrime(i)) {

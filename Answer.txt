@@ -1,0 +1,19 @@
+Parte 2
+
+    2.1 Condiciones de Carrera
+        2.1.1   Cuando dos o mas serpientes alcancen al mismo un tiempo un raton, y no se pueda determinar cual de las dos (o mas)se comio al raton.
+        2.1.2   Cuando dos o mas serpientes tomen un portal y que salgan en desorden o de tamaño diferente al que entraron.
+        2.1.3   Cuando dos o mas serpientes alcancen el mismo rayo y no se pueda decir cual lo tomo primero.
+
+    2.2 Uso incorrecto o inapropiado de las colecciones, considerando su manejo concurrente.
+        2.2.1   Se aumento la velocidad de turbo de 2 a 20 y se puede evidenciar el error que genera la aplicacion aunque el juego sigue ejecutandose.
+                La excepcion que arroja es de un thread, mas exactamente "Exception in thread "AWT-EventQueue-0" java.util.ConcurrentModificationException".
+    2.3 Uso inncesario de esperas activas.
+
+        2.3.1   Analizando el codigo pudimos notar que hay 3 esperas activas que son ineficientes para la aplicacion, y que de mejorarlas utilizaria menos recursos
+                de la maquina.
+
+    3. R.2.1.1 :Cuando dos o mas serpientes alcancen un raton al mismo tiempo, se analizara su tamaño y se le concedera comerlo a la serpiente mas corta, 
+                y de  esta manera pueda seguir creciendo.
+        R.2.1.2 :Cuando dos o mas serpientes alcancen un portal, se le otorgara pasar de primeras a la serpiente con mayor longitud, y asi evitar errores.
+        R.2.1.3 : Cuando dos o mas serpientes alcancen el mismo rayo, se le otorgara a la serpiente con mayor puntaje.
