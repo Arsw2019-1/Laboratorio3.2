@@ -14,8 +14,9 @@ import java.util.logging.Logger;
 
 public class PrimeFinderThread extends Thread {
 
+    long tiempo;
     int a, b;
-    int reloj=0;
+    int reloj = 0;
     Timer timer;
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private List<Integer> primes;
@@ -36,6 +37,10 @@ public class PrimeFinderThread extends Thread {
             public void run() {
                 reloj += 1000;
                 System.out.println("que dice " + reloj);
+                if (reloj > 8000) {
+                    reloj = 0;
+
+                }
             }
         };
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
@@ -48,49 +53,68 @@ public class PrimeFinderThread extends Thread {
             notify();
 
         }
-        if (reloj < Control.TMILISECONDS) {
+        tiempo = System.currentTimeMillis() - Control.startTime;
+        while (tiempo < Control.TMILISECONDS) {
+            System.out.println("Puat");
+          wait();
+        }
+        /**
+        if (reloj <= Control.TMILISECONDS) {
             System.out.println("Llegamos ");
             wait();
-        }else{
+        } else {
             System.out.println("Bjamos");
-            reloj=0;
-        }
+            reloj = 0;
+        }*/
+
         System.out.println("lOs numeros primos que lleva recoletados son : " + this.getPrimes() + "El hilo :" + this);
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
+        Control.startTime = System.currentTimeMillis();
 
     }
 
     @Override
     public void run() {
-        time();
+        //time();
         for (int i = a; i < b; i++) {
-            System.out.println("Hola loco");
-            if (isPrime(i)) {
+            System.out.println("Hola loco " + Control.startTime);
+            tiempo = (System.currentTimeMillis()) - Control.startTime;
+            System.out.println("tiempo...." + tiempo);
+            if (true) {
                 synchronized (this) {
-                    System.out.println("Hola loca");
-
-                    while (reloj <= Control.TMILISECONDS) {
-                        reloj = 0;
+                    System.out.println("Hola reloj " + tiempo);
+                    //System.out.println("tiempo local"+Control.TMILISECONDS);
+                    while (tiempo >= Control.TMILISECONDS) {
+                    //while (reloj >= Control.TMILISECONDS) {
+                        //reloj = 0;
+                        primes.add(i);
+                        System.out.println(i);
                         System.out.println("Esperando");
                         try {
-                            wait();
+                            //primes.add(i);
+                            //System.out.println(i);
+                            tiempo = (System.currentTimeMillis()) - Control.startTime;
+                            this.wait();
                         } catch (InterruptedException ex) {
                             Logger.getLogger(PrimeFinderThread.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                     }
-                    primes.add(i);
-                    System.out.println(i);
+                   
+                    if (isPrime(i)) {
+                        primes.add(i);
+                        System.out.println(i);
+                    }
                     //Thread.sleep(1000);
-                    time();
+                    //time();
                     notify();
                 }
 
             }
-            if (reloj > Control.TMILISECONDS) {
-                reloj = 0;
+            //if (reloj > Control.TMILISECONDS) {
+            //  reloj = 0;
 
-            }
+            //}
         }
 
     }

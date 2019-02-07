@@ -19,7 +19,7 @@ public class Control extends Thread {
     
     int reloj;
     Timer timer;
-
+    public static long startTime= System.currentTimeMillis();
     private final static int NTHREADS = 3;
     private final static int MAXVALUE = 30000000;
     public final static int TMILISECONDS = 5000;
@@ -59,17 +59,20 @@ public class Control extends Thread {
 
     @Override
     public void run() {
+        //time();
         for (int i = 0; i < NTHREADS; i++) {
             pft[i].start();
         }
         for (int ii = 0; ii < NTHREADS; ii++) {
             try {
                 pft[ii].getListPrimes();
+                //pft[ii].notify();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
             }
         
         }
+        
     }
 
 }
