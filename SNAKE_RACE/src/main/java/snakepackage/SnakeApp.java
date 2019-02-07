@@ -19,9 +19,13 @@ import javax.swing.JPanel;
  * @author jd-
  *
  */
-public class SnakeApp extends JFrame implements ActionListener{
-    Boolean ver=false;
-JButton iniciar=new JButton("Iniciar ");
+public class SnakeApp extends JFrame implements ActionListener {
+
+    Boolean ver = false;
+    JButton iniciar;
+    JButton pausar;
+    JButton reanudar;
+
     private static SnakeApp app;
     public static final int MAX_THREADS = 8;
     Snake[] snakes = new Snake[MAX_THREADS];
@@ -52,36 +56,38 @@ JButton iniciar=new JButton("Iniciar ");
         frame.setLocation(dimension.width / 2 - frame.getWidth() / 2,
                 dimension.height / 2 - frame.getHeight() / 2);
         board = new Board();
-        
-        
-        frame.add(board,BorderLayout.CENTER);
-        JButton iniciar=new JButton("Iniciar");
-        JPanel actionsBPabel=new JPanel();
+
+        frame.add(board, BorderLayout.CENTER);
+        iniciar = new JButton("Iniciar");
+        pausar = new JButton("Pausar");
+        reanudar = new JButton("Reanudar");
+        JPanel actionsBPabel = new JPanel();
         actionsBPabel.setLayout(new FlowLayout());
         actionsBPabel.add(iniciar);
+        actionsBPabel.add(pausar);
+        actionsBPabel.add(reanudar);
         iniciar.addActionListener(this);
+        pausar.addActionListener(this);
+        reanudar.addActionListener(this);
         //actionsBPabel.add(new JButton("Iniciar "));
-        frame.add(actionsBPabel,BorderLayout.SOUTH);
-        
-        
+        frame.add(actionsBPabel, BorderLayout.SOUTH);
 
     }
 
     public static void main(String[] args) {
-        
+
         //SnakeApp n1=new SnakeApp();
-        
         app = new SnakeApp();
         app.init();
         //app.setVisible(true);
-        
+
     }
 
     private void init() {
         //if(ver){
-        
+
         for (int i = 0; i != MAX_THREADS; i++) {
-            
+
             snakes[i] = new Snake(i + 1, spawn[i], i + 1);
             snakes[i].addObserver(board);
             thread[i] = new Thread(snakes[i]);
@@ -90,7 +96,6 @@ JButton iniciar=new JButton("Iniciar ");
 
         frame.setVisible(true);
 
-            
         while (true) {
             int x = 0;
             for (int i = 0; i != MAX_THREADS; i++) {
@@ -103,41 +108,55 @@ JButton iniciar=new JButton("Iniciar ");
             }
         }
 
-
         System.out.println("Thread (snake) status:");
         for (int i = 0; i != MAX_THREADS; i++) {
-            System.out.println("["+i+"] :"+thread[i].getState());
+            System.out.println("[" + i + "] :" + thread[i].getState());
         }
-        
 
-       // }
+        // }
     }
+
     public static SnakeApp getApp() {
         return app;
     }
 
     public void actionPerformed(ActionEvent e) {
         /**
-        System.out.println("el del 1 :"+e.toString()+" y el otro :"+iniciar.getText());
-        String u=e.toString();
-        
-          * */
-        String t1=e.getActionCommand();
-        String t2=iniciar.getText();
-        /**
-        Boolean t=(t1.equals(t2));
-        System.out.println("hola"+t);
-        System.out.println("mire : "+e.getActionCommand());
-        System.out.println("miro: "+iniciar.getText());
-        t1=(String)t1;
-        System.out.println("lolol : "+t1.equals((String)iniciar.getText()));
+         * System.out.println("el del 1 :"+e.toString()+" y el otro
+         * :"+iniciar.getText()); String u=e.toString();
+         *
+         *
+         */
+        String t1 = e.getActionCommand();
+        String t2 = iniciar.getText();
+
+        Boolean t = (t1.equals(t2));
+        System.out.println("hola" + t);
+        System.out.println("mire : " + e.getActionCommand());
+        System.out.println("miro: " + iniciar.getText());
+        t1 = (String) t1;
+        //System.out.println("lolol : " + t1.equals((String) iniciar.getText()));
         //if((e.getSource().toString().equals( iniciar.get toString()))){
-        * */
-        if(!t1.equals((String)iniciar.getText())){
-        for (int i = 0; i != MAX_THREADS; i++) {
-            thread[i].start();
-        }
-        
+        System.out.println("lalalala " + (e.getSource() == reanudar));
+        //if(t1.equals((String)iniciar.getText())){
+        if ((e.getSource() == iniciar)) {
+
+            for (int i = 0; i != MAX_THREADS; i++) {
+                thread[i].start();
+            }
+
+        } else if (e.getSource() == pausar) {
+            for (int p = 0; p != MAX_THREADS; p++) {
+                //thread[p].sleep(1000000);
+                thread[p].suspend();
+            }
+
+        } else if (e.getSource() == reanudar) {
+            for (int u = 0; u != MAX_THREADS; u++) {
+                thread[u].notify();
+            }
+            
+
         }
     }
 
